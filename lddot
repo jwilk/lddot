@@ -1,0 +1,114 @@
+#!/usr/bin/python
+# encoding=UTF-8
+
+# Copyright © 2010 Jakub Wilk <jwilk@jwilk.net>
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the “Software”), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+import argparse
+import os
+import re
+import subprocess
+
+os.putenv('LC_ALL', 'C')
+
+template_begin = '''
+digraph
+{
+    rankdir=LR
+    edge [arrowsize=0.5, arrowhead="vee"]
+    node [fontsize=10, width=0, height=0, shape=box]
+'''
+
+template_end = '''
+}
+'''
+
+class Subprocess(subprocess.Popen):
+
+    def __init__(self, *args, **kwargs):
+        command_line = kwargs.get('args')
+        if command_line is None:
+            command_line = args[0]
+        self.__command = command_line[0]
+        subprocess.Popen.__init__(self, *args, **kwargs)
+
+    def wait(self, *args, **kwargs):
+        rc = subprocess.Popen.wait(self, *args, **kwargs)
+        if rc != 0:
+            raise subprocess.CalledProcessError(rc, self.__command)
+
+class ArgumentParser(argparse.ArgumentParser):
+    def __init__(self, *args, **kwargs):
+        argparse.ArgumentParser.__init__(self, *args, **kwargs)
+        self.add_argument('binary')
+
+_readelf_needed = re.compile(r'^ 0x[0-9a-f]+ [(]NEEDED[)] +Shared library: \[(.*)\]$').match
+
+def process(elf, mapping):
+    print('"{0}" -> {{'.format(elf))
+    readelf = Subprocess(
+        ['readelf', '-d', '--', elf],
+        stdout=subprocess.PIPE
+    )
+    for line in readelf.stdout:
+        line = line.decode('ASCII')
+        match  =_readelf_needed(line)
+        if match is None:
+            continue
+        target = match.group(1)
+        try:
+            target = mapping[target]
+        except KeyError:
+            pass
+        print('"{0}"'.format(target))
+    readelf.wait()
+    print('}')
+
+def main():
+    options = ArgumentParser().parse_args()
+    ldd = Subprocess(
+        ['ldd', '--', options.binary],
+        stdout=subprocess.PIPE,
+    )
+    mapping = {}
+    for line in ldd.stdout:
+        line = line.decode('ASCII')
+        if not line.startswith('\t'):
+            continue
+        if not line.endswith('\n'):
+            continue
+        line = line[1:-1].split(' => ')
+        if len(line) != 2:
+            continue
+        src, dst = line
+        dst = dst.split(' ', 1)[0]
+        mapping[src] = dst
+    ldd.wait()
+    print(template_begin)
+    process(options.binary, mapping)
+    for elf in mapping.values():
+        if elf:
+            process(elf, mapping)
+    print(template_end)
+
+if __name__ == '__main__':
+    main()
+
+# vim:ts=4 sw=4 et
