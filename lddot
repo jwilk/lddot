@@ -26,6 +26,11 @@ import os
 import re
 import subprocess
 
+description = \
+'''
+ldd with Graphviz output.
+'''
+
 os.putenv('LC_ALL', 'C')
 
 template_begin = '''
@@ -55,9 +60,9 @@ class Subprocess(subprocess.Popen):
             raise subprocess.CalledProcessError(rc, self.__command)
 
 class ArgumentParser(argparse.ArgumentParser):
-    def __init__(self, *args, **kwargs):
-        argparse.ArgumentParser.__init__(self, *args, **kwargs)
-        self.add_argument('binary')
+    def __init__(self):
+        argparse.ArgumentParser.__init__(self, description=description)
+        self.add_argument('binary', metavar='BINARY', help='ELF binary to inspect')
 
 _readelf_needed = re.compile(r'^ 0x[0-9a-f]+ [(]NEEDED[)] +Shared library: \[(.*)\]$').match
 
