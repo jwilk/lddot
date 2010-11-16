@@ -34,8 +34,7 @@ ldd with Graphviz output.
 os.putenv('LC_ALL', 'C')
 
 template_begin = '''
-digraph
-{
+digraph {
     rankdir=LR
     edge [arrowsize=0.5, arrowhead="vee"]
     node [fontsize=10, width=0, height=0, shape=box]
