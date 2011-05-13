@@ -28,7 +28,7 @@ import subprocess
 
 description = \
 '''
-ldd with Graphviz output.
+ldd(1) with Graphviz output.
 '''
 
 os.putenv('LC_ALL', 'C')
