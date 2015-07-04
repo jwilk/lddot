@@ -13,6 +13,6 @@ script:
 - python lddot $(which python) > python.dot
 - cat python.dot
 - graph-easy --as boxart < python.dot
-- find -name "*.rst" | xargs -L1 -t -I{} rst2pseudoxml.py --strict {} /dev/null
+- find -name "*.rst" | xargs -L1 -t -I{} rst2xml.py --strict {} /dev/null
 
 # vim:ts=2 sts=2 sw=2 et
