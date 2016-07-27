@@ -73,7 +73,7 @@ def process(elf, mapping):
     )
     for line in readelf.stdout:
         line = line.decode('ASCII')
-        match  =_readelf_needed(line)
+        match = _readelf_needed(line)
         if match is None:
             continue
         target = match.group(1)
