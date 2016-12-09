@@ -1,5 +1,5 @@
-lddot (0.1) UNRELEASED; urgency=low
+lddot (0.1) unstable; urgency=low
 
   * Initial release.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Fri, 09 Dec 2016 13:01:46 +0100
+ -- Jakub Wilk <jwilk@jwilk.net>  Fri, 09 Dec 2016 13:06:23 +0100
