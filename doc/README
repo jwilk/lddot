@@ -1,4 +1,4 @@
-::
+.. code:: console
 
    $ lddot $(which bash) | graph-easy --as boxart
 
