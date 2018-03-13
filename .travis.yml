@@ -21,7 +21,7 @@ install:
 - pip install docutils
 - \[ "$TRAVIS_PYTHON_VERSION" = 3.2 ] || pip install pygments
 script:
-- python lddot $(which python) > python.dot
+- ./lddot $(which python) > python.dot
 - cat python.dot
 - graph-easy --as boxart < python.dot
 - python -m pydiatra .
