@@ -58,10 +58,27 @@ class Subprocess(subprocess.Popen):
         if rc != 0:
             raise subprocess.CalledProcessError(rc, self.__command)
 
+def _html_escape(match):
+    c = ord(match.group(0))
+    return '&#{0};'.format(c)
+
+def dot_escape(s):
+    # https://www.graphviz.org/doc/info/lang.html says:
+    #
+    #    In quoted strings […] the only escaped character is double-quote
+    #    ("). That is, in quoted strings, the dyad \" is converted to "; all
+    #    other characters are left unchanged. In particular, \\ remains \\.
+    #
+    # This makes little sense, and doesn't match how dot(1) actually works.
+    # Oh well. Doubling the backslashes can't hurt much.
+    s = s.replace('\\', '\\\\')
+    s = re.sub('[&"]', _html_escape, s)
+    return '"{s}"'.format(s=s)
+
 _readelf_needed = re.compile(r'^ 0x[0-9a-f]+ [(]NEEDED[)] +Shared library: \[(.*)\]$').match
 
 def process(elf, mapping):
-    print('"{0}" -> {{'.format(elf))
+    print(dot_escape(elf) + ' -> {')
     readelf = Subprocess(
         ['readelf', '-d', '--', elf],
         stdout=subprocess.PIPE
@@ -76,7 +93,7 @@ def process(elf, mapping):
             target = mapping[target]
         except KeyError:
             pass
-        print('"{0}"'.format(target))
+        print(dot_escape(target))
     readelf.wait()
     print('}')
 
