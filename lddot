@@ -58,11 +58,6 @@ class Subprocess(subprocess.Popen):
         if rc != 0:
             raise subprocess.CalledProcessError(rc, self.__command)
 
-class ArgumentParser(argparse.ArgumentParser):
-    def __init__(self):
-        argparse.ArgumentParser.__init__(self, description=description)
-        self.add_argument('binary', metavar='BINARY', help='ELF binary to inspect')
-
 _readelf_needed = re.compile(r'^ 0x[0-9a-f]+ [(]NEEDED[)] +Shared library: \[(.*)\]$').match
 
 def process(elf, mapping):
@@ -86,7 +81,9 @@ def process(elf, mapping):
     print('}')
 
 def main():
-    options = ArgumentParser().parse_args()
+    ap = argparse.ArgumentParser(description=description)
+    ap.add_argument('binary', metavar='BINARY', help='ELF binary to inspect')
+    options = ap.parse_args()
     ldd = Subprocess(
         ['ldd', '--', options.binary],
         stdout=subprocess.PIPE,
