@@ -21,7 +21,7 @@ install:
 - $if_pygments python3 -m pip install docutils pygments
 script:
 - dpkg-parsechangelog -ldoc/changelog --all 2>&1 >/dev/null | { ! grep .; }
-- ./lddot $(which python3) > python.dot
+- ./lddot $(command -v python3) > python.dot
 - cat python.dot
 - graph-easy --as boxart < python.dot
 - python3 -m pydiatra .
