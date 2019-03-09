@@ -80,7 +80,7 @@ def dot_escape(s):
 _readelf_needed = re.compile(r'^ 0x[0-9a-f]+ [(]NEEDED[)] +Shared library: \[(.*)\]$').match
 
 def process(elf, mapping):
-    print(dot_escape(elf) + ' -> {')
+    print('   ', dot_escape(elf), '-> {')
     readelf = Subprocess(
         ['readelf', '-d', '--', elf],
         stdout=subprocess.PIPE
@@ -95,9 +95,9 @@ def process(elf, mapping):
             target = mapping[target]
         except KeyError:
             pass
-        print(dot_escape(target))
+        print('       ', dot_escape(target))
     readelf.wait()
-    print('}')
+    print('    }')
 
 def main():
     ap = argparse.ArgumentParser(description=description)
@@ -121,12 +121,12 @@ def main():
         dst = dst.split(' ', 1)[0]
         mapping[src] = dst
     ldd.wait()
-    print(template_begin)
+    print(template_begin.strip())
     process(options.binary, mapping)
     for elf in mapping.values():
         if elf:
             process(elf, mapping)
-    print(template_end)
+    print(template_end.strip())
 
 if __name__ == '__main__':
     main()
