@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # encoding=UTF-8
 
 # Copyright © 2010-2019 Jakub Wilk <jwilk@jwilk.net>
@@ -25,6 +25,8 @@ import argparse
 import os
 import re
 import subprocess
+
+...  # Python 3 is required
 
 description = \
 '''
