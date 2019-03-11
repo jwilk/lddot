@@ -1,3 +1,19 @@
+Overview
+========
+
+**lddot** prints ELF shared library dependencies in Graphviz_ format.
+
+.. _Graphviz: https://www.graphviz.org/
+
+Security
+--------
+
+**lldot** uses ldd(1) under the hood,
+and therefore might not be secure when used on untrusted input.
+
+Example
+-------
+
 .. code:: console
 
    $ lddot $(command -v bash) | graph-easy --as boxart
