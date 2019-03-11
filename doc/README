@@ -32,4 +32,11 @@ Example
                                                     │                                              │
                                                     └──────────────────────────────────────────────┘
 
+Prerequisites
+=============
+
+* Python ≥ 3.2
+* GNU libc
+* GNU binutils
+
 .. vim:ts=3 sts=3 sw=3 et ft=rst
