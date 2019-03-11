@@ -34,7 +34,7 @@ __version__ = '0.2'
 
 description = \
 '''
-ldd(1) with Graphviz output.
+print ELF dependencies in Graphviz format
 '''
 
 os.putenv('LC_ALL', 'C')
