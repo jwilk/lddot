@@ -118,6 +118,18 @@ class VersionAction(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):
         print('{prog} {0}'.format(__version__, prog=parser.prog))
         print('+ Python {0}.{1}.{2}'.format(*sys.version_info))
+        for prog in 'ldd', 'readelf':
+            proc = Subprocess(
+                [prog, '--version'],
+                stdout=subprocess.PIPE
+            )
+            for line in proc.stdout:
+                line = line.rstrip()
+                line = line.decode('ASCII')
+                print('+ ' + line)
+                break
+            proc.stdout.read()
+            proc.wait()
         parser.exit()
 
 def main():
