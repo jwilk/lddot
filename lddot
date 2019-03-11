@@ -25,8 +25,11 @@ import argparse
 import os
 import re
 import subprocess
+import sys
 
 ...  # Python 3 is required
+
+__version__ = '0.1.1'
 
 description = \
 '''
@@ -99,8 +102,27 @@ def process(elf, mapping):
     readelf.wait()
     print('    }')
 
+class VersionAction(argparse.Action):
+    '''
+    argparse --version action
+    '''
+
+    def __init__(self, option_strings, dest=argparse.SUPPRESS):
+        super().__init__(
+            option_strings=option_strings,
+            dest=dest,
+            nargs=0,
+            help='show version information and exit'
+        )
+
+    def __call__(self, parser, namespace, values, option_string=None):
+        print('{prog} {0}'.format(__version__, prog=parser.prog))
+        print('+ Python {0}.{1}.{2}'.format(*sys.version_info))
+        parser.exit()
+
 def main():
     ap = argparse.ArgumentParser(description=description)
+    ap.add_argument('--version', action=VersionAction)
     ap.add_argument('binary', metavar='BINARY', help='ELF binary to inspect')
     options = ap.parse_args()
     ldd = Subprocess(
