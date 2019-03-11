@@ -2,14 +2,17 @@ lddot (0.2) UNRELEASED; urgency=low
 
   * Drop support for Python 2.X.
   * Add makefile.
-  * Add manual page.
   * Fix string quoting in output.
   * Always use UTF-8 as output encoding.
   * Make output pretty-printed.
   * Add the --version option.
-  * Use “command -v” instead of “which” in README.
+  * Improve documentation:
+    + Use “command -v” instead of “which” in README.
+    + Add security disclaimer to README.
+    + Document prerequisites.
+    + Add manual page.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Mon, 11 Mar 2019 11:47:14 +0100
+ -- Jakub Wilk <jwilk@jwilk.net>  Mon, 11 Mar 2019 18:52:05 +0100
 
 lddot (0.1) unstable; urgency=low
 
