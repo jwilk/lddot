@@ -11,6 +11,12 @@ lddot \- print ELF dependencies in Graphviz format
 .SH DESCRIPTION
 .B lddot
 prints ELF shared library dependencies of the binary in Graphviz format.
+.SS Security
+.B lldot
+uses
+.BR ldd (1)
+under the hood,
+and therefore might not be secure when used on untrusted input.
 .SH OPTIONS
 .TP
 .BR \-h ", " \-\-help
