@@ -25,12 +25,12 @@ install:
 - $if_pygments python3 -m pip install docutils pygments
 script:
 - dpkg-parsechangelog -ldoc/changelog --all 2>&1 >/dev/null | { ! grep .; }
+- $if_pygments private/check-rst
 - ./lddot $(command -v python3) > python.dot
 - cat python.dot
 - graph-easy --as boxart < python.dot
 - python3 -m pydiatra .
 - python3 -m pyflakes .
-- $if_pygments private/check-rst
 - make install PREFIX=~/.local
 - cd /
 - lddot --version
