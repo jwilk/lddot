@@ -23,10 +23,10 @@ before_install:
 - if [[ $TRAVIS_PYTHON_VERSION = 3.2 ]]; then if_pygments=:; fi
 install:
 - python3 -m pip install pydiatra $pyflakes
-- $if_pygments python3 -m pip install docutils pygments
+- $if_pygments python3 -m pip install restructuredtext-lint pygments
 script:
 - dpkg-parsechangelog -ldoc/changelog --all 2>&1 >/dev/null | { ! grep .; }
-- $if_pygments private/check-rst
+- $if_pygments restructuredtext-lint --encoding=UTF-8 README.rst
 - make test
 - python3 -m pydiatra .
 - python3 -m pyflakes .
