@@ -8,8 +8,10 @@ Overview
 Security
 --------
 
-**lddot** uses ldd(1) under the hood,
+**lddot** uses ldd_ under the hood,
 and therefore might not be secure when used on untrusted input.
+
+.. _ldd: http://man7.org/linux/man-pages/man1/ldd.1.html
 
 Example
 -------
