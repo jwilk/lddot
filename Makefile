@@ -27,6 +27,14 @@ install: lddot
 	install -d $(DESTDIR)$(mandir)/man1
 	install -p -m644 doc/$(<).1 $(DESTDIR)$(mandir)/man1/
 
+.PHONY: test
+test: lddot
+	prove -v
+
+.PHONY: test-installed
+test-installed: $(or $(shell command -v lddot;),$(bindir)/lddot)
+	LDDOT_TEST_TARGET=lddot prove -v
+
 .PHONY: clean
 clean:
 	rm -f *.tmp

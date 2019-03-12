@@ -15,6 +15,7 @@ jobs:
 addons:
   apt:
     packages:
+    - graphviz
     - libgraph-easy-perl
 before_install:
 - pyflakes=pyflakes
@@ -26,9 +27,7 @@ install:
 script:
 - dpkg-parsechangelog -ldoc/changelog --all 2>&1 >/dev/null | { ! grep .; }
 - $if_pygments private/check-rst
-- ./lddot $(command -v python3) > python.dot
-- cat python.dot
-- graph-easy --as boxart < python.dot
+- make test
 - python3 -m pydiatra .
 - python3 -m pyflakes .
 - make install PREFIX=~/.local
