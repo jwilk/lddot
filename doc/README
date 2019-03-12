@@ -8,7 +8,7 @@ Overview
 Security
 --------
 
-**lldot** uses ldd(1) under the hood,
+**lddot** uses ldd(1) under the hood,
 and therefore might not be secure when used on untrusted input.
 
 Example
