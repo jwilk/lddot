@@ -12,12 +12,12 @@ lddot (0.2) unstable; urgency=low
   * Fix string quoting in output.
   * Always use UTF-8 as output encoding.
   * Make output pretty-printed.
-  * Update description in --help message.
   * Add the --version option.
   * Improve documentation:
     + Expand README.
     + Use “command -v” instead of “which” in README.
     + Add manual page.
+    + Update description in --help message.
 
  -- Jakub Wilk <jwilk@jwilk.net>  Tue, 12 Mar 2019 21:40:18 +0100
 
