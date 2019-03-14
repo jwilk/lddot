@@ -26,7 +26,7 @@ install:
 - $if_pygments python3 -m pip install restructuredtext-lint pygments
 script:
 - dpkg-parsechangelog -ldoc/changelog --all 2>&1 >/dev/null | { ! grep .; }
-- $if_pygments restructuredtext-lint --encoding=UTF-8 README.rst
+- $if_pygments restructuredtext-lint --encoding=UTF-8 doc/README
 - make test
 - python3 -m pydiatra .
 - python3 -m pyflakes .
