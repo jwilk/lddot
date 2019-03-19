@@ -59,7 +59,7 @@ class Subprocess(subprocess.Popen):
         self.__command = command_line[0]
         subprocess.Popen.__init__(self, *args, **kwargs)
 
-    def wait(self, *args, **kwargs):
+    def wait(self, *args, **kwargs):  # pylint: disable=arguments-differ
         rc = subprocess.Popen.wait(self, *args, **kwargs)
         if rc != 0:
             raise subprocess.CalledProcessError(rc, self.__command)
