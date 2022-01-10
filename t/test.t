@@ -17,7 +17,8 @@ then
 fi
 echo "# test target = $prog"
 tmpdir=$(mktemp -d -t lddot.XXXXXX)
-"$prog" $(command -v bash) > "$tmpdir/test.dot"
+bash=$(command -v bash)
+"$prog" "$bash" > "$tmpdir/test.dot"
 echo "ok 1"
 sed -e 's/^/# /' "$tmpdir/test.dot"
 if command -v dot > /dev/null
