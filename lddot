@@ -66,7 +66,7 @@ class Subprocess(subprocess.Popen):
 
 def _html_escape(match):
     c = ord(match.group(0))
-    return '&#{0};'.format(c)
+    return f'&#{c};'
 
 def dot_escape(s):
     # https://www.graphviz.org/doc/info/lang.html says:
@@ -79,7 +79,7 @@ def dot_escape(s):
     # Oh well. Doubling the backslashes can't hurt much.
     s = s.replace('\\', '\\\\')
     s = re.sub('[&"]', _html_escape, s)
-    return '"{s}"'.format(s=s)
+    return f'"{s}"'
 
 _readelf_needed = re.compile(r'^ 0x[0-9a-f]+ [(]NEEDED[)] +Shared library: \[(.*)\]$').match
 
@@ -117,7 +117,7 @@ class VersionAction(argparse.Action):
         )
 
     def __call__(self, parser, namespace, values, option_string=None):
-        print('{prog} {0}'.format(__version__, prog=parser.prog))
+        print(f'{parser.prog} {__version__}')
         print('+ Python {0}.{1}.{2}'.format(*sys.version_info))
         for prog in 'ldd', 'readelf':
             proc = Subprocess(
@@ -142,7 +142,7 @@ def main():
     try:
         os.stat(options.binary)
     except OSError as exc:
-        print('{prog}: {path}: {err}'.format(prog=ap.prog, path=options.binary, err=exc.strerror), file=sys.stderr)
+        print(f'{ap.prog}: {options.binary}: {exc.strerror}', file=sys.stderr)
         sys.exit(1)
     ldd = Subprocess(
         ['ldd', '--', options.binary],
