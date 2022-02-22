@@ -28,7 +28,7 @@ import re
 import subprocess
 import sys
 
-type(...)  # Python 3 is required
+type(0_0)  # Python >= 3.6 is required
 
 __version__ = '0.2.1'
 

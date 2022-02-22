@@ -37,7 +37,7 @@ Example
 Prerequisites
 =============
 
-* Python ≥ 3.2
+* Python ≥ 3.6
 * GNU libc
 * GNU binutils
 
