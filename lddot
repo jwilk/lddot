@@ -22,7 +22,6 @@
 # SOFTWARE.
 
 import argparse
-import io
 import os
 import re
 import subprocess
@@ -141,7 +140,7 @@ def main():
     ap.add_argument('--version', action=VersionAction)
     ap.add_argument('binary', metavar='BINARY', help='ELF binary to inspect')
     options = ap.parse_args()
-    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='UTF-8')
+    sys.stdout.reconfigure(encoding='UTF-8')
     try:
         os.stat(options.binary)
     except OSError as exc:
