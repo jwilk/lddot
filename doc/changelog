@@ -1,6 +1,6 @@
 lddot (0.2.1) UNRELEASED; urgency=low
 
-  * Drop support for Python < 3.6.
+  * Drop support for Python < 3.7.
   * Use HTTPS for man7.org in README.
   * Improve the test suite.
 
