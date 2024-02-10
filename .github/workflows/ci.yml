@@ -50,8 +50,10 @@ jobs:
         cd /
         man 1 lddot | grep -A 10 -w LDDOT
     - name: run post-install tests
-      run:
+      run: |
+        rm lddot
         make test-installed
+        git restore lddot
     - name: run pydiatra
       run: |
         python3 -m pip install pydiatra
