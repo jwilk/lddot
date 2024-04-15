@@ -88,10 +88,10 @@ def process(elf, mapping):
     print('   ', dot_escape(elf), '-> {')
     readelf = Subprocess(
         ['readelf', '-d', '--', elf],
-        stdout=subprocess.PIPE
+        stdout=subprocess.PIPE,
+        encoding='ASCII', errors='strict',
     )
     for line in readelf.stdout:
-        line = line.decode('ASCII')
         match = _readelf_needed(line)
         if match is None:
             continue
@@ -124,11 +124,11 @@ class VersionAction(argparse.Action):
         for prog in 'ldd', 'readelf':
             proc = Subprocess(
                 [prog, '--version'],
-                stdout=subprocess.PIPE
+                stdout=subprocess.PIPE,
+                encoding='ASCII', errors='strict',
             )
             for line in proc.stdout:
                 line = line.rstrip()
-                line = line.decode('ASCII')
                 print('+ ' + line)
                 break
             proc.stdout.read()
@@ -149,10 +149,10 @@ def main():
     ldd = Subprocess(
         ['ldd', '--', options.binary],
         stdout=subprocess.PIPE,
+        encoding='ASCII', errors='strict',
     )
     mapping = {}
     for line in ldd.stdout:
-        line = line.decode('ASCII')
         if not line.startswith('\t'):
             continue
         if not line.endswith('\n'):
